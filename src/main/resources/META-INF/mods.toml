@@ -1,0 +1,21 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+issueTrackerURL="https://github.com/Mrbysco/AllyEffect/issues"
+license="MIT"
+
+[[mods]]
+modId="allyeffect"
+version="${file.jarVersion}"
+displayName="Ally Effect"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/ally-effect"
+authors="Mrbysco, nekomaster1000"
+description='''
+Heal your friends at the cost of hunger by hugging them!
+'''
+
+[[dependencies.allyeffect]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.20,1.21)"
+ordering="NONE"
+side="BOTH"
