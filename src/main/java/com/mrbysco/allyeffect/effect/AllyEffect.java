@@ -45,7 +45,10 @@ public class AllyEffect extends MobEffect {
 			if (durationCounter % AllyConfig.COMMON.giverEffectFrequency.get() == 0) {
 				FunctionHandler.getGiverFunction().ifPresent(giverFunction ->
 						functions.execute(giverFunction, server.createCommandSourceStack()
-								.withEntity(livingEntity).withSuppressedOutput())
+								.withEntity(livingEntity)
+								.withPosition(livingEntity.position())
+								.withRotation(livingEntity.getRotationVector())
+								.withSuppressedOutput())
 				);
 			}
 			if (durationCounter % AllyConfig.COMMON.receiverEffectFrequency.get() == 0) {
@@ -53,7 +56,10 @@ public class AllyEffect extends MobEffect {
 				if (receiverFunction != null) {
 					for (LivingEntity receiver : nearbyEntities) {
 						functions.execute(receiverFunction, server.createCommandSourceStack()
-								.withEntity(receiver).withSuppressedOutput());
+								.withEntity(receiver)
+								.withPosition(receiver.position())
+								.withRotation(receiver.getRotationVector())
+								.withSuppressedOutput());
 					}
 				}
 			}
