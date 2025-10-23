@@ -1,1 +1,1 @@
-effect give @s minecraft:hunger 2 1 true
+effect give @s minecraft:hunger 2 39 true

@@ -1,1 +1,1 @@
-effect give @s minecraft:regeneration 2 1 true
+effect give @s minecraft:regeneration 2 2 true
