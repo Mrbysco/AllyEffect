@@ -16,7 +16,7 @@ public class AllyConfig {
 
 			effectAnimation = builder
 					.comment("The animation style for the ally effect (Default: HUG)")
-					.defineEnum("effectAnimation", Animation.HUG);
+					.defineEnum("effectAnimation", Animation.EVOCATION);
 
 			builder.pop();
 		}
