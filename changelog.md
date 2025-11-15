@@ -1,1 +1,1 @@
-* Initial release
+* Fix potential null pointer crash that can trigger when an effect is removed
