@@ -8,6 +8,7 @@ import net.minecraft.network.protocol.game.ClientboundRemoveMobEffectPacket;
 import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -92,7 +93,7 @@ public class EffectHandler {
 	public static void onEffectAdded(MobEffectEvent.Added event) {
 		MobEffectInstance instance = event.getEffectInstance();
 		LivingEntity effectEntity = event.getEntity();
-		if (effectEntity instanceof ServerPlayer serverPlayer && instance.getEffect() == AllyRegistry.ALLY.get()) {
+		if (effectEntity instanceof ServerPlayer serverPlayer && instance != null && instance.getEffect() == AllyRegistry.ALLY.get()) {
 			ServerLevel serverLevel = serverPlayer.serverLevel();
 			for (Entity entity : serverLevel.getEntities().getAll()) {
 				if (entity instanceof ServerPlayer otherPlayer) {
@@ -105,9 +106,9 @@ public class EffectHandler {
 
 	@SubscribeEvent
 	public static void onEffectRemove(MobEffectEvent.Remove event) {
-		MobEffectInstance instance = event.getEffectInstance();
+		MobEffect effect = event.getEffect();
 		LivingEntity effectEntity = event.getEntity();
-		if (effectEntity instanceof ServerPlayer serverPlayer && instance.getEffect() == AllyRegistry.ALLY.get()) {
+		if (effectEntity instanceof ServerPlayer serverPlayer && effect == AllyRegistry.ALLY.get()) {
 			ServerLevel serverLevel = serverPlayer.serverLevel();
 			for (Entity entity : serverLevel.getEntities().getAll()) {
 				if (entity instanceof ServerPlayer otherPlayer) {
@@ -122,7 +123,7 @@ public class EffectHandler {
 	public static void onEffectExpired(MobEffectEvent.Expired event) {
 		MobEffectInstance instance = event.getEffectInstance();
 		LivingEntity effectEntity = event.getEntity();
-		if (effectEntity instanceof ServerPlayer serverPlayer && instance.getEffect() == AllyRegistry.ALLY.get()) {
+		if (effectEntity instanceof ServerPlayer serverPlayer && instance != null && instance.getEffect() == AllyRegistry.ALLY.get()) {
 			ServerLevel serverLevel = serverPlayer.serverLevel();
 			for (Entity entity : serverLevel.getEntities().getAll()) {
 				if (entity instanceof ServerPlayer otherPlayer) {
