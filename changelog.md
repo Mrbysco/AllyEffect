@@ -1,1 +1,1 @@
-* Initial update to 1.21.1 NeoForge
+* Initial update to 26.1.1
