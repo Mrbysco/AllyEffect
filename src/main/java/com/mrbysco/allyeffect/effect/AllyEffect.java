@@ -3,7 +3,8 @@ package com.mrbysco.allyeffect.effect;
 import com.mrbysco.allyeffect.AllyEffectMod;
 import com.mrbysco.allyeffect.config.AllyConfig;
 import com.mrbysco.allyeffect.handler.FunctionHandler;
-import net.minecraft.commands.CommandFunction;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.functions.CommandFunction;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.ServerFunctionManager;
 import net.minecraft.server.level.ServerLevel;
@@ -23,21 +24,21 @@ public class AllyEffect extends MobEffect {
 	}
 
 	@Override
-	public boolean isDurationEffectTick(int duration, int amplifier) {
+	public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
 		return duration >= 1;
 	}
 
 	private int durationCounter = 0;
 
 	@Override
-	public void applyEffectTick(LivingEntity livingEntity, int amplifier) {
+	public boolean applyEffectTick(LivingEntity livingEntity, int amplifier) {
 		if (livingEntity.level() instanceof ServerLevel serverLevel) {
 			List<LivingEntity> nearbyEntities = serverLevel.getNearbyEntities(LivingEntity.class,
 					receiverCondition.range(AllyConfig.COMMON.effectRange.get()),
 					livingEntity, livingEntity.getBoundingBox().inflate(AllyConfig.COMMON.effectRange.get()));
 			if (nearbyEntities.isEmpty() && AllyConfig.COMMON.activateOnlyInRange.get()) {
 				durationCounter++;
-				return;
+				return true;
 			}
 
 			final MinecraftServer server = serverLevel.getServer();
@@ -52,7 +53,7 @@ public class AllyEffect extends MobEffect {
 				);
 			}
 			if (durationCounter % AllyConfig.COMMON.receiverEffectFrequency.get() == 0) {
-				CommandFunction receiverFunction = FunctionHandler.getReceiverFunction().orElse(null);
+				CommandFunction<CommandSourceStack> receiverFunction = FunctionHandler.getReceiverFunction().orElse(null);
 				if (receiverFunction != null) {
 					for (LivingEntity receiver : nearbyEntities) {
 						functions.execute(receiverFunction, server.createCommandSourceStack()
@@ -65,5 +66,7 @@ public class AllyEffect extends MobEffect {
 			}
 		}
 		durationCounter++;
+
+		return true;
 	}
 }

@@ -2,6 +2,8 @@ package com.mrbysco.allyeffect.mixin;
 
 import com.mrbysco.allyeffect.client.AnimationHandler;
 import net.minecraft.client.model.AgeableListModel;
+import net.minecraft.client.model.ArmedModel;
+import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;

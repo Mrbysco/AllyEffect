@@ -16,7 +16,7 @@ public class AnimationHandler {
 	                                 float netHeadYaw, float headPitch) {
 		if (!(livingEntity instanceof Player player)) return; // Only animate players
 		if (!(humanoidModel instanceof PlayerModel<?> playerModel)) return;
-		if (!livingEntity.hasEffect(AllyRegistry.ALLY.get())) return; // Only animate if the player has the Ally effect
+		if (!livingEntity.hasData(AllyRegistry.EFFECT_ACTIVE)) return; // Only animate if the player has the Ally effect
 
 		Animation animation = AllyConfig.CLIENT.effectAnimation.get();
 		switch (animation) {

@@ -2,15 +2,15 @@ package com.mrbysco.allyeffect.config;
 
 import com.mrbysco.allyeffect.AllyEffectMod;
 import com.mrbysco.allyeffect.client.Animation;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.event.config.ModConfigEvent;
+import net.neoforged.neoforge.common.ModConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 
 public class AllyConfig {
 	public static class Client {
-		public final ForgeConfigSpec.EnumValue<Animation> effectAnimation;
-		Client(ForgeConfigSpec.Builder builder) {
+		public final ModConfigSpec.EnumValue<Animation> effectAnimation;
+		Client(ModConfigSpec.Builder builder) {
 			builder.comment("Client settings")
 					.push("client");
 
@@ -22,23 +22,23 @@ public class AllyConfig {
 		}
 	}
 
-	public static final ForgeConfigSpec clientSpec;
+	public static final ModConfigSpec clientSpec;
 	public static final Client CLIENT;
 
 	static {
-		final Pair<Client, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(Client::new);
+		final Pair<Client, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(Client::new);
 		clientSpec = specPair.getRight();
 		CLIENT = specPair.getLeft();
 	}
 
 	public static class Common {
 
-		public final ForgeConfigSpec.IntValue effectRange;
-		public final ForgeConfigSpec.BooleanValue activateOnlyInRange;
-		public final ForgeConfigSpec.IntValue giverEffectFrequency;
-		public final ForgeConfigSpec.IntValue receiverEffectFrequency;
+		public final ModConfigSpec.IntValue effectRange;
+		public final ModConfigSpec.BooleanValue activateOnlyInRange;
+		public final ModConfigSpec.IntValue giverEffectFrequency;
+		public final ModConfigSpec.IntValue receiverEffectFrequency;
 
-		Common(ForgeConfigSpec.Builder builder) {
+		Common(ModConfigSpec.Builder builder) {
 			builder.comment("Effect settings")
 					.push("effect");
 
@@ -62,11 +62,11 @@ public class AllyConfig {
 		}
 	}
 
-	public static final ForgeConfigSpec commonSpec;
+	public static final ModConfigSpec commonSpec;
 	public static final Common COMMON;
 
 	static {
-		final Pair<Common, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(Common::new);
+		final Pair<Common, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(Common::new);
 		commonSpec = specPair.getRight();
 		COMMON = specPair.getLeft();
 	}

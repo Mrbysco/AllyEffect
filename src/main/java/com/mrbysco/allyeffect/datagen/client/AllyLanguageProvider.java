@@ -3,9 +3,9 @@ package com.mrbysco.allyeffect.datagen.client;
 import com.mrbysco.allyeffect.AllyEffectMod;
 import com.mrbysco.allyeffect.registry.AllyRegistry;
 import net.minecraft.data.PackOutput;
-import net.minecraftforge.common.data.LanguageProvider;
+import net.neoforged.neoforge.common.data.LanguageProvider;
 
-public class AllyLanguageProvider extends LanguageProvider {
+public class AllyLanguageProvider extends net.neoforged.neoforge.common.data.LanguageProvider {
 
 	public AllyLanguageProvider(PackOutput packOutput) {
 		super(packOutput, AllyEffectMod.MOD_ID, "en_us");

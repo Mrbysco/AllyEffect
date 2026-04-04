@@ -1,24 +1,21 @@
 package com.mrbysco.allyeffect.network;
 
 import com.mrbysco.allyeffect.AllyEffectMod;
-import com.mrbysco.allyeffect.network.message.AllyEffectMessage;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.simple.SimpleChannel;
+import com.mrbysco.allyeffect.network.handler.ServerPayloadHandler;
+import com.mrbysco.allyeffect.network.message.AllyEffectPayload;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
+@EventBusSubscriber
 public class PacketHandler {
 
-	private static final String PROTOCOL_VERSION = "1";
-	public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
-			new ResourceLocation(AllyEffectMod.MOD_ID, "main"),
-			() -> PROTOCOL_VERSION,
-			PROTOCOL_VERSION::equals,
-			PROTOCOL_VERSION::equals
-	);
 
-	private static int id = 0;
+	@SubscribeEvent
+	public static void setupPackets(final RegisterPayloadHandlersEvent event) {
+		final PayloadRegistrar registrar = event.registrar(AllyEffectMod.MOD_ID);
 
-	public static void init() {
-		CHANNEL.registerMessage(id++, AllyEffectMessage.class, AllyEffectMessage::encode, AllyEffectMessage::decode, AllyEffectMessage::handle);
+		registrar.playToServer(AllyEffectPayload.ID, AllyEffectPayload.CODEC, ServerPayloadHandler.getInstance()::handleEffect);
 	}
 }
