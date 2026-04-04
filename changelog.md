@@ -1,1 +1,1 @@
-* Fix potential null pointer crash that can trigger when an effect is removed
+* Initial update to 1.21.1 NeoForge
