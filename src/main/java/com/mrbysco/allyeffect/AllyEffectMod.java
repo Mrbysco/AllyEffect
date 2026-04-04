@@ -5,7 +5,7 @@ import com.mrbysco.allyeffect.client.KeyHandler;
 import com.mrbysco.allyeffect.config.AllyConfig;
 import com.mrbysco.allyeffect.registry.AllyRegistry;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.api.distmarker.Dist;
@@ -36,8 +36,8 @@ public class AllyEffectMod {
 		}
 	}
 
-	public static ResourceLocation modLoc(String path) {
-		return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
+	public static Identifier modLoc(String path) {
+		return Identifier.fromNamespaceAndPath(MOD_ID, path);
 	}
 
 }

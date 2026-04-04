@@ -61,7 +61,7 @@ public class EffectHandler {
 		Player player = event.getEntity();
 		if (player instanceof ServerPlayer serverPlayer) {
 			CompoundTag persistentData = serverPlayer.getPersistentData();
-			if (persistentData.getBoolean("allyeffectDisabled")) {
+			if (persistentData.getBooleanOr("allyeffectDisabled", false)) {
 				setAllyActive(serverPlayer, false);
 			}
 			if (isAllyActive(serverPlayer) && serverPlayer.level() instanceof ServerLevel serverLevel) {
@@ -82,7 +82,7 @@ public class EffectHandler {
 		MobEffectInstance instance = event.getEffectInstance();
 		LivingEntity effectEntity = event.getEntity();
 		if (effectEntity instanceof ServerPlayer serverPlayer && instance != null && instance.getEffect() == AllyRegistry.ALLY.get()) {
-			ServerLevel serverLevel = serverPlayer.serverLevel();
+			ServerLevel serverLevel = serverPlayer.level();
 			for (Entity entity : serverLevel.getEntities().getAll()) {
 				if (entity instanceof ServerPlayer otherPlayer) {
 					// Sync the effect to other players
@@ -97,7 +97,7 @@ public class EffectHandler {
 		Holder<MobEffect> effect = event.getEffect();
 		LivingEntity effectEntity = event.getEntity();
 		if (effectEntity instanceof ServerPlayer serverPlayer && effect == AllyRegistry.ALLY.get()) {
-			ServerLevel serverLevel = serverPlayer.serverLevel();
+			ServerLevel serverLevel = serverPlayer.level();
 			for (Entity entity : serverLevel.getEntities().getAll()) {
 				if (entity instanceof ServerPlayer otherPlayer) {
 					// Sync the removed effect to other players
@@ -112,7 +112,7 @@ public class EffectHandler {
 		MobEffectInstance instance = event.getEffectInstance();
 		LivingEntity effectEntity = event.getEntity();
 		if (effectEntity instanceof ServerPlayer serverPlayer && instance != null && instance.getEffect() == AllyRegistry.ALLY.get()) {
-			ServerLevel serverLevel = serverPlayer.serverLevel();
+			ServerLevel serverLevel = serverPlayer.level();
 			for (Entity entity : serverLevel.getEntities().getAll()) {
 				if (entity instanceof ServerPlayer otherPlayer) {
 					// Sync the effect expiring to other players

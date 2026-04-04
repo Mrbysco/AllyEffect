@@ -8,12 +8,13 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import org.lwjgl.glfw.GLFW;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(value = Dist.CLIENT)
 public class KeyHandler {
-	public static KeyMapping KEY_ALLY = new KeyMapping(getKey("ally_effect"), GLFW.GLFW_KEY_LEFT_ALT, getKey("category"));
+	public static KeyMapping.Category CATEGORY = new KeyMapping.Category(AllyEffectMod.modLoc("category"));
+	public static KeyMapping KEY_ALLY = new KeyMapping(getKey("ally_effect"), GLFW.GLFW_KEY_LEFT_ALT, CATEGORY);
 
 	private static String getKey(String name) {
 		return String.join(".", "key", AllyEffectMod.MOD_ID, name);
@@ -21,6 +22,7 @@ public class KeyHandler {
 
 	@SubscribeEvent
 	public static void registerKeyMapping(final RegisterKeyMappingsEvent event) {
+		event.registerCategory(CATEGORY);
 		event.register(KEY_ALLY);
 	}
 
@@ -30,7 +32,7 @@ public class KeyHandler {
 		boolean isDown = KEY_ALLY.isDown();
 		if (isDown != pressed) {
 			pressed = isDown;
-			PacketDistributor.sendToServer(new AllyEffectPayload(pressed));
+			ClientPacketDistributor.sendToServer(new AllyEffectPayload(pressed));
 		}
 	}
 }

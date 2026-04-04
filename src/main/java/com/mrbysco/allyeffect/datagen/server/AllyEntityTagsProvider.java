@@ -5,13 +5,12 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraft.world.entity.EntityType;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import java.util.concurrent.CompletableFuture;
 
 public class AllyEntityTagsProvider extends EntityTypeTagsProvider {
-	public AllyEntityTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, ExistingFileHelper helper) {
-		super(output, provider, AllyEffectMod.MOD_ID, helper);
+	public AllyEntityTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
+		super(output, provider, AllyEffectMod.MOD_ID);
 	}
 
 	@Override

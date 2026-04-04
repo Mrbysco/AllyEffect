@@ -17,7 +17,7 @@ import java.util.List;
 
 public class AllyEffect extends MobEffect {
 	public static final TargetingConditions receiverCondition = TargetingConditions.forNonCombat()
-			.selector(entity -> entity.getType().is(AllyEffectMod.RECEIVERS)).ignoreLineOfSight();
+			.selector((entity, level) -> entity.is(AllyEffectMod.RECEIVERS)).ignoreLineOfSight();
 
 	public AllyEffect() {
 		super(MobEffectCategory.NEUTRAL, 5882118);
@@ -31,37 +31,35 @@ public class AllyEffect extends MobEffect {
 	private int durationCounter = 0;
 
 	@Override
-	public boolean applyEffectTick(LivingEntity livingEntity, int amplifier) {
-		if (livingEntity.level() instanceof ServerLevel serverLevel) {
-			List<LivingEntity> nearbyEntities = serverLevel.getNearbyEntities(LivingEntity.class,
-					receiverCondition.range(AllyConfig.COMMON.effectRange.get()),
-					livingEntity, livingEntity.getBoundingBox().inflate(AllyConfig.COMMON.effectRange.get()));
-			if (nearbyEntities.isEmpty() && AllyConfig.COMMON.activateOnlyInRange.get()) {
-				durationCounter++;
-				return true;
-			}
+	public boolean applyEffectTick(ServerLevel serverLevel, LivingEntity mob, int amplification) {
+		List<LivingEntity> nearbyEntities = serverLevel.getNearbyEntities(LivingEntity.class,
+				receiverCondition.range(AllyConfig.COMMON.effectRange.get()),
+				mob, mob.getBoundingBox().inflate(AllyConfig.COMMON.effectRange.get()));
+		if (nearbyEntities.isEmpty() && AllyConfig.COMMON.activateOnlyInRange.get()) {
+			durationCounter++;
+			return true;
+		}
 
-			final MinecraftServer server = serverLevel.getServer();
-			final ServerFunctionManager functions = server.getFunctions();
-			if (durationCounter % AllyConfig.COMMON.giverEffectFrequency.get() == 0) {
-				FunctionHandler.getGiverFunction().ifPresent(giverFunction ->
-						functions.execute(giverFunction, server.createCommandSourceStack()
-								.withEntity(livingEntity)
-								.withPosition(livingEntity.position())
-								.withRotation(livingEntity.getRotationVector())
-								.withSuppressedOutput())
-				);
-			}
-			if (durationCounter % AllyConfig.COMMON.receiverEffectFrequency.get() == 0) {
-				CommandFunction<CommandSourceStack> receiverFunction = FunctionHandler.getReceiverFunction().orElse(null);
-				if (receiverFunction != null) {
-					for (LivingEntity receiver : nearbyEntities) {
-						functions.execute(receiverFunction, server.createCommandSourceStack()
-								.withEntity(receiver)
-								.withPosition(receiver.position())
-								.withRotation(receiver.getRotationVector())
-								.withSuppressedOutput());
-					}
+		final MinecraftServer server = serverLevel.getServer();
+		final ServerFunctionManager functions = server.getFunctions();
+		if (durationCounter % AllyConfig.COMMON.giverEffectFrequency.get() == 0) {
+			FunctionHandler.getGiverFunction().ifPresent(giverFunction ->
+					functions.execute(giverFunction, server.createCommandSourceStack()
+							.withEntity(mob)
+							.withPosition(mob.position())
+							.withRotation(mob.getRotationVector())
+							.withSuppressedOutput())
+			);
+		}
+		if (durationCounter % AllyConfig.COMMON.receiverEffectFrequency.get() == 0) {
+			CommandFunction<CommandSourceStack> receiverFunction = FunctionHandler.getReceiverFunction().orElse(null);
+			if (receiverFunction != null) {
+				for (LivingEntity receiver : nearbyEntities) {
+					functions.execute(receiverFunction, server.createCommandSourceStack()
+							.withEntity(receiver)
+							.withPosition(receiver.position())
+							.withRotation(receiver.getRotationVector())
+							.withSuppressedOutput());
 				}
 			}
 		}
