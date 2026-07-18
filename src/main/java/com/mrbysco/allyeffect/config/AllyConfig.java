@@ -37,6 +37,9 @@ public class AllyConfig {
 		public final ModConfigSpec.BooleanValue activateOnlyInRange;
 		public final ModConfigSpec.IntValue giverEffectFrequency;
 		public final ModConfigSpec.IntValue receiverEffectFrequency;
+		public final ModConfigSpec.BooleanValue passiveEffectEnabled;
+		public final ModConfigSpec.IntValue passiveEffectRange;
+		public final ModConfigSpec.IntValue passiveEffectFrequency;
 
 		Common(ModConfigSpec.Builder builder) {
 			builder.comment("Effect settings")
@@ -57,6 +60,22 @@ public class AllyConfig {
 			receiverEffectFrequency = builder
 					.comment("The frequency (in ticks) at which the receiver entity receives the effect (Default: 20)")
 					.defineInRange("receiverEffectFrequency", 20, 1, Integer.MAX_VALUE);
+
+			builder.pop();
+			builder.comment("Passive settings")
+					.push("passive");
+
+			passiveEffectEnabled = builder
+					.comment("If true, the passive effect is enabled (Default: false)")
+					.define("passiveEffectEnabled", false);
+
+			passiveEffectRange = builder
+					.comment("The range the passive effect checks for other entities (Default: 5)")
+					.defineInRange("passiveEffectRange", 5, 0, 64);
+
+			passiveEffectFrequency = builder
+					.comment("The frequency (in ticks) at which the passive effect is applied (Default: 20)")
+					.defineInRange("passiveEffectFrequency", 20, 1, Integer.MAX_VALUE);
 
 			builder.pop();
 		}
