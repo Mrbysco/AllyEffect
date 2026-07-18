@@ -3,7 +3,6 @@ package com.mrbysco.allyeffect.datagen.client;
 import com.mrbysco.allyeffect.AllyEffectMod;
 import com.mrbysco.allyeffect.registry.AllyRegistry;
 import net.minecraft.data.PackOutput;
-import net.neoforged.neoforge.common.data.LanguageProvider;
 
 public class AllyLanguageProvider extends net.neoforged.neoforge.common.data.LanguageProvider {
 
