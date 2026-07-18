@@ -29,7 +29,7 @@ public abstract class PlayerModelMixin<T extends LivingEntity> extends HumanoidM
 					value = "HEAD"
 			)
 	)
-	private void allyeffect$setupAnim(T livingEntity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci) {
+	private void allyeffect$setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci) {
 		this.parts.forEach(ModelPart::resetPose);
 	}
 }

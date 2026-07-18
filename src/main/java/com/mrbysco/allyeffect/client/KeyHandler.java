@@ -13,7 +13,7 @@ import org.lwjgl.glfw.GLFW;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class KeyHandler {
-	public static KeyMapping KEY_ALLY = new KeyMapping(getKey("ally_effect"), GLFW.GLFW_KEY_LEFT_ALT, getKey("category"));
+	public static final KeyMapping KEY_ALLY = new KeyMapping(getKey("ally_effect"), GLFW.GLFW_KEY_LEFT_ALT, getKey("category"));
 
 	private static String getKey(String name) {
 		return String.join(".", "key", AllyEffectMod.MOD_ID, name);

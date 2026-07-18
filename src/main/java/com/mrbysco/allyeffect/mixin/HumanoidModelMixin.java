@@ -2,8 +2,6 @@ package com.mrbysco.allyeffect.mixin;
 
 import com.mrbysco.allyeffect.client.AnimationHandler;
 import net.minecraft.client.model.AgeableListModel;
-import net.minecraft.client.model.ArmedModel;
-import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,8 +19,8 @@ public abstract class HumanoidModelMixin<T extends LivingEntity> extends Ageable
 					shift = At.Shift.BEFORE
 			)
 	)
-	private void allyeffect$setupAnim(T livingEntity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci) {
+	private void allyeffect$setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci) {
 		HumanoidModel<T> model = (HumanoidModel<T>) (Object) this;
-		AnimationHandler.animatePlayer(livingEntity, model, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+		AnimationHandler.animatePlayer(entity, model, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 	}
 }
