@@ -3,10 +3,14 @@ package com.mrbysco.allyeffect.handler;
 import com.mrbysco.allyeffect.config.AllyConfig;
 import com.mrbysco.allyeffect.effect.AllyEffect;
 import com.mrbysco.allyeffect.registry.AllyRegistry;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.functions.CommandFunction;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundRemoveMobEffectPacket;
 import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.ServerFunctionManager;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
@@ -64,15 +68,39 @@ public class EffectHandler {
 			if (persistentData.getBoolean("allyeffectDisabled")) {
 				setAllyActive(serverPlayer, false);
 			}
-			if (isAllyActive(serverPlayer) && serverPlayer.level() instanceof ServerLevel serverLevel) {
-				List<LivingEntity> nearbyEntities = serverLevel.getNearbyEntities(LivingEntity.class,
-						AllyEffect.receiverCondition.range(AllyConfig.COMMON.effectRange.get()),
-						serverPlayer, serverPlayer.getBoundingBox().inflate(AllyConfig.COMMON.effectRange.get()));
-				if (nearbyEntities.isEmpty() && AllyConfig.COMMON.activateOnlyInRange.get()) // Check for nearby entities
-					return;
+			if (serverPlayer.level() instanceof ServerLevel serverLevel) {
+				if (isAllyActive(serverPlayer)) {
+					List<LivingEntity> nearbyEntities = serverLevel.getNearbyEntities(LivingEntity.class,
+							AllyEffect.receiverCondition.range(AllyConfig.COMMON.effectRange.get()),
+							serverPlayer, serverPlayer.getBoundingBox().inflate(AllyConfig.COMMON.effectRange.get()));
+					if ((!nearbyEntities.isEmpty() && AllyConfig.COMMON.activateOnlyInRange.get())) {
+						MobEffectInstance instance = new MobEffectInstance(AllyRegistry.ALLY, 20, 0, true, false);
+						serverPlayer.addEffect(instance, serverPlayer);
+					}
+				}
 
-				MobEffectInstance instance = new MobEffectInstance(AllyRegistry.ALLY, 20, 0, true, false);
-				serverPlayer.addEffect(instance, serverPlayer);
+				if (AllyConfig.COMMON.passiveEffectEnabled.get()) {
+					List<LivingEntity> nearbyEntities = serverLevel.getNearbyEntities(LivingEntity.class,
+							AllyEffect.receiverCondition.range(AllyConfig.COMMON.passiveEffectRange.get()),
+							serverPlayer, serverPlayer.getBoundingBox().inflate(AllyConfig.COMMON.passiveEffectRange.get()));
+					if (!nearbyEntities.isEmpty()) {
+						int passiveFrequency = AllyConfig.COMMON.passiveEffectFrequency.get();
+						if (serverPlayer.tickCount % passiveFrequency == 0) {
+							CommandFunction<CommandSourceStack> passiveFunction = FunctionHandler.getPassiveFunction().orElse(null);
+							if (passiveFunction != null) {
+								final MinecraftServer server = serverLevel.getServer();
+								final ServerFunctionManager functions = server.getFunctions();
+								for (LivingEntity receiver : nearbyEntities) {
+									functions.execute(passiveFunction, server.createCommandSourceStack()
+											.withEntity(receiver)
+											.withPosition(receiver.position())
+											.withRotation(receiver.getRotationVector())
+											.withSuppressedOutput());
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 	}
