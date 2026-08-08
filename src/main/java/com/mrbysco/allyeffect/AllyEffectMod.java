@@ -1,7 +1,6 @@
 package com.mrbysco.allyeffect;
 
 import com.mojang.logging.LogUtils;
-import com.mrbysco.allyeffect.client.KeyHandler;
 import com.mrbysco.allyeffect.config.AllyConfig;
 import com.mrbysco.allyeffect.registry.AllyRegistry;
 import net.minecraft.core.registries.Registries;
@@ -15,7 +14,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
-import net.neoforged.neoforge.common.NeoForge;
 import org.slf4j.Logger;
 
 @Mod(AllyEffectMod.MOD_ID)
@@ -35,7 +33,6 @@ public class AllyEffectMod {
 		if (dist.isClient()) {
 			container.registerConfig(ModConfig.Type.CLIENT, AllyConfig.clientSpec);
 			container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
-			NeoForge.EVENT_BUS.addListener(KeyHandler::onClientTick);
 		}
 	}
 

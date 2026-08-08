@@ -1,7 +1,6 @@
 package com.mrbysco.allyeffect.handler;
 
 import com.mrbysco.allyeffect.AllyEffectMod;
-import com.mrbysco.allyeffect.effect.AllyEffect;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.functions.CommandFunction;
 import net.minecraft.resources.Identifier;

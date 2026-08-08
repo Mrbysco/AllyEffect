@@ -28,6 +28,7 @@ public class KeyHandler {
 
 	private static boolean pressed = false;
 
+	@SubscribeEvent
 	public static void onClientTick(ClientTickEvent.Pre event) {
 		boolean isDown = KEY_ALLY.isDown();
 		if (isDown != pressed) {

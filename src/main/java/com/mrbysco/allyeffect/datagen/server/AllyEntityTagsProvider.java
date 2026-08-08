@@ -4,7 +4,7 @@ import com.mrbysco.allyeffect.AllyEffectMod;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -16,6 +16,10 @@ public class AllyEntityTagsProvider extends EntityTypeTagsProvider {
 	@Override
 	protected void addTags(HolderLookup.Provider provider) {
 		this.tag(AllyEffectMod.RECEIVERS)
-				.add(EntityType.PLAYER, EntityType.VILLAGER, EntityType.WOLF);
+				.add(
+						EntityTypes.PLAYER.builtInRegistryHolder().key(),
+						EntityTypes.VILLAGER.builtInRegistryHolder().key(),
+						EntityTypes.WOLF.builtInRegistryHolder().key()
+				);
 	}
 }
